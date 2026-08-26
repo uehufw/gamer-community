@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مجتمع الألعاب - Gamer Community</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background: #080612; color: #fff; min-height: 100vh; padding: 20px; }
+
+        /* العنوان الرئيسي الكبير */
+        header { text-align: center; margin-bottom: 20px; }
+        .main-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #00ffcc;
+            text-shadow: 0 0 25px rgba(0, 255, 204, 0.6), 0 0 10px #00ffcc;
+            letter-spacing: 2px;
+        }
+
+        /* شريط الاسم المستعار بالعلوي */
+        .user-bar {
+            max-width: 1100px;
+            margin: 0 auto 20px auto;
+            background: rgba(20, 15, 38, 0.9);
+            border: 1px solid #2a254a;
+            border-radius: 12px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .user-bar label { font-size: 0.9rem; color: #00ffcc; font-weight: bold; white-space: nowrap; }
+        .user-bar input {
+            flex: 1;
+            background: #0a0814;
+            border: 1px solid #2a254a;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .user-bar input:focus { border-color: #00ffcc; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px; /* الانطباعات بالوسط والشات المصغر على اليسار */
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(20, 15, 38, 0.9);
+            border: 1px solid #2a254a;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .panel h2 { font-size: 1.1rem; color: #ff0055; margin-bottom: 15px; border-bottom: 1px solid #2a254a; padding-bottom: 8px; }
+
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 0.85rem; color: #aaa; margin-bottom: 5px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; background: #0a0814; border: 1px solid #2a254a; border-radius: 8px;
+            padding: 9px 12px; color: #fff; font-size: 0.88rem; outline: none;
+        }
+        .form-group textarea { height: 90px; resize: vertical; }
+
+        button.btn-action {
+            width: 100%; background: linear-gradient(90deg, #ff0055, #ff5500); color: #fff; border: none;
+            border-radius: 8px; padding: 10px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        button.btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4); }
+
+        /* معرض الانطباعات الممتاز (نفس التصميم الأصلي) */
+        .reviews-feed {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .review-card {
+            background: rgba(18, 14, 33, 0.9);
+            border: 1px solid #2a254a;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .review-card:hover { border-color: #00ffcc; }
+        .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .game-title { font-size: 1rem; font-weight: bold; color: #fff; }
+        .platform-badge { background: #251d45; color: #00ffcc; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; }
+        .author-tag { color: #ff0055; font-size: 0.78rem; margin-bottom: 6px; font-weight: bold; }
+        .rating-stars { color: #ffcc00; font-size: 0.85rem; margin-bottom: 8px; }
+        .review-text { color: #d1d1e0; font-size: 0.85rem; line-height: 1.4; white-space: pre-wrap; }
+
+        /* الشات المصغر على اليسار */
+        .chat-container { display: flex; flex-direction: column; height: 550px; }
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            background: #05030a;
+            border: 1px solid #2a254a;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .chat-msg { background: #15102a; padding: 8px 10px; border-radius: 8px; border-right: 2px solid #00ffcc; }
+        .chat-user { color: #ff0055; font-weight: bold; font-size: 0.78rem; margin-bottom: 2px; }
+        .chat-text { color: #ddd; font-size: 0.82rem; line-height: 1.3; }
+
+        .chat-controls { display: flex; gap: 6px; }
+        .chat-controls input { flex: 1; background: #0a0814; border: 1px solid #2a254a; border-radius: 6px; padding: 8px; color: #fff; font-size: 0.8rem; outline: none; }
+        .chat-controls button { width: 60px; background: #00ffcc; color: #000; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+
+        @media (max-width: 850px) { .container { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="main-title">🎮 مجتمع الألعاب 🎮</h1>
+    </header>
+
+    <!-- إعدادات الاسم المستعار في الأعلى -->
+    <div class="user-bar">
+        <label>⚙️ الاسم المستعار (Gamer Tag):</label>
+        <input type="text" id="globalUser" placeholder="اكتب اسمك المستعار الذي يظهر بالشات والانطباعات..." value="Gamer_1">
+    </div>
+
+    <div class="container">
+        
+        <!-- القسم الرئيسي: كتابة ومعرض الانطباعات (يمين/وسط) -->
+        <div>
+            <div class="panel">
+                <h2>سجل انطباع جديد</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                    <div class="form-group">
+                        <label>اسم اللعبة</label>
+                        <input type="text" id="gameTitle" placeholder="Resident Evil 4">
+                    </div>
+                    <div class="form-group">
+                        <label>المنصة</label>
+                        <select id="gamePlatform">
+                            <option value="PC">PC</option>
+                            <option value="PlayStation 5">PlayStation 5</option>
+                            <option value="Xbox Series X">Xbox Series X</option>
+                            <option value="iPad/Mobile">iPad/Mobile</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>التقييم</label>
+                        <select id="gameRating">
+                            <option value="⭐⭐⭐⭐⭐ (أسطورية)">⭐⭐⭐⭐⭐ (أسطورية)</option>
+                            <option value="⭐⭐⭐⭐ (ممتازة)">⭐⭐⭐⭐ (ممتازة)</option>
+                            <option value="⭐⭐⭐ (جيدة)">⭐⭐⭐ (جيدة)</option>
+                            <option value="⭐⭐ (متوسطة)">⭐⭐ (متوسطة)</option>
+                            <option value="⭐ (سيئة)">⭐ (سيئة)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>انطباعك ورأيك</label>
+                    <textarea id="gameReview" placeholder="اكتب رأيك بالتفصيل هنا..."></textarea>
+                </div>
+                <button class="btn-action" onclick="addReview()">نشر الانطباع</button>
+            </div>
+
+            <h2 style="color: #00ffcc; margin-top: 25px; font-size: 1.2rem;">أحدث انطباعات الألعاب</h2>
+            <div class="reviews-feed" id="reviewsFeed"></div>
+        </div>
+
+        <!-- الشات المباشر المصغر (على اليسار) -->
+        <div class="panel chat-container">
+            <h2>شات المجتمع 💬</h2>
+            <div class="chat-box" id="chatBox"></div>
+            
+            <div class="chat-controls">
+                <input type="text" id="chatText" placeholder="رسالة..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()">إرسال</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let reviews = JSON.parse(localStorage.getItem('reviews_v3')) || [
+            {
+                author: "المطور",
+                title: "Resident Evil 4 Remake",
+                platform: "PC",
+                rating: "⭐⭐⭐⭐⭐ (أسطورية)",
+                review: "تجربة رعب وأكشن متكاملة والجرافيكس خرافي!"
+            }
+        ];
+        let messages = JSON.parse(localStorage.getItem('chat_v3')) || [
+            { user: "الآدمن", text: "أهلاً بك! اكتب رسالتك هنا." }
+        ];
+
+        function renderAll() {
+            // عرض الشات المصغر
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = '';
+            messages.forEach(m => {
+                chatBox.innerHTML += `
+                    <div class="chat-msg">
+                        <div class="chat-user">${m.user}</div>
+                        <div class="chat-text">${m.text}</div>
+                    </div>
+                `;
+            });
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // عرض الانطباعات بالتصميم الممتاز
+            const feed = document.getElementById('reviewsFeed');
+            feed.innerHTML = '';
+            reviews.forEach(r => {
+                feed.innerHTML += `
+                    <div class="review-card">
+                        <div>
+                            <div class="review-header">
+                                <span class="game-title">${r.title}</span>
+                                <span class="platform-badge">${r.platform}</span>
+                            </div>
+                            <div class="author-tag">بواسطة: ${r.author}</div>
+                            <div class="rating-stars">${r.rating}</div>
+                            <div class="review-text">${r.review}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function sendChatMessage() {
+            const user = document.getElementById('globalUser').value.trim() || "Gamer_Anonymous";
+            const textInput = document.getElementById('chatText');
+            const text = textInput.value.trim();
+
+            if(!text) return;
+
+            messages.push({ user, text });
+            localStorage.setItem('chat_v3', JSON.stringify(messages));
+            textInput.value = '';
+            renderAll();
+        }
+
+        function addReview() {
+            const author = document.getElementById('globalUser').value.trim() || "Gamer_Anonymous";
+            const title = document.getElementById('gameTitle').value.trim();
+            const platform = document.getElementById('gamePlatform').value;
+            const rating = document.getElementById('gameRating').value;
+            const review = document.getElementById('gameReview').value.trim();
+
+            if(!title || !review) return alert("يرجى كتابة اسم اللعبة والانطباع!");
+
+            reviews.unshift({ author, title, platform, rating, review });
+            localStorage.setItem('reviews_v3', JSON.stringify(reviews));
+            
+            document.getElementById('gameTitle').value = '';
+            document.getElementById('gameReview').value = '';
+            renderAll();
+        }
+
+        renderAll();
+    </script>
+</body>
+</html>
